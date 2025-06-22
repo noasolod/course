@@ -1,4 +1,4 @@
-n = int(input("please enter an integer between 1 and 10**6: "))
+n = int(input())
 track_results = [n]
 while n != 1:
     if n % 2 == 0:
