@@ -2,6 +2,8 @@ from calendar import month
 from enum import Enum
 from datetime import date, datetime
 
+number_of_students = 0
+
 class MahaProfession(Enum):
     Elint = 0
     Commint = 1
@@ -89,15 +91,61 @@ def is_date_valid(recruit_date):
             print(f"The day you have entered is not between 1 and maximum day of month({max_day}). Please enter in format 'dd/mm/yyyy'")
             flag = False
     if flag:
-        recruit_date = datetime.strptime(recruit_date, "%d-%m-%Y")
+        recruit_date = datetime.strptime(recruit_date, "%d/%m/%Y")
         if today >= recruit_date:
             return True, recruit_date
     return False, None
 
-
 class MahaStudent(object):
-    def is_attribute_valid(self):
-        # is name valid
-        if self.
-
     def __init__(self, full_name: str, id: int, mail: str, recruit_date: str, profession: MahaProfession):
+        id_return = is_id_valid(id)
+        date_return = is_date_valid(recruit_date)
+        if is_name_valid(full_name) and id_return[0] and is_mail_valid(mail) and date_return[0]:
+            self.__name = full_name
+            self.__id = id_return[1]
+            self.__mail = mail
+            self.__recruit_date = date_return[1]
+            self.__profession = profession
+            global number_of_students
+            number_of_students += 1
+    @property
+    def Name(self):
+        return self.__name
+    @property
+    def ID(self):
+        return str(self.__id)
+    @property
+    def Mail(self):
+        return self.__mail
+    @Mail.setter
+    def Mail(self, new_mail):
+        if is_mail_valid(new_mail):
+            self.__mail = new_mail
+    @property
+    def RecruitDate(self):
+        return self.__recruit_date
+    @property
+    def Profession(self):
+        return self.__profession
+    def get_pazam(self):
+        today = datetime.now()
+        return (today - self.__recruit_date).days
+    @staticmethod
+    def total_students():
+        global number_of_students
+        return number_of_students
+    @staticmethod
+    def delete_student():
+        global number_of_students
+        number_of_students -= 1
+
+class MahaElintStudent(MahaStudent):
+    def __init__(self, full_name: str, id: int, mail: str, recruit_date: str, list_of_samples = []):
+        super().__init__(full_name, id, mail, recruit_date)
+        self.__samples = list_of_samples
+    @property
+    def Samples(self):
+        return self.__samples
+    def add_sample(self, new_sample):
+        self.__samples.append(new_sample)
+
