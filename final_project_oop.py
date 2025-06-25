@@ -1,4 +1,4 @@
-from calendar import month
+import calendar
 from enum import Enum
 from datetime import date, datetime
 
@@ -51,7 +51,7 @@ def is_mail_valid(mail):
             et_count += 1
         elif e == ".":
             dot_count += 1
-    if mail[0] == "@" or mail[0] == "." or ma2il[-1] == "@" or mail[-1] == ".":
+    if mail[0] == "@" or mail[0] == "." or mail[-1] == "@" or mail[-1] == ".":
         print("Your mail cannot have '.' or '@' in it's ends")
         flag = False
     if et_count != dot_count != 1:
@@ -140,12 +140,11 @@ class MahaStudent(object):
         number_of_students -= 1
 
 class MahaElintStudent(MahaStudent):
-    def __init__(self, full_name: str, id: int, mail: str, recruit_date: str, list_of_samples = []):
-        super().__init__(full_name, id, mail, recruit_date)
-        self.__samples = list_of_samples
+    def __init__(self, full_name: str, id: int, mail: str, recruit_date: str):
+        super().__init__(full_name, id, mail, recruit_date, profession = MahaProfession.Elint)
+        self.__samples = []
     @property
     def Samples(self):
         return self.__samples
     def add_sample(self, new_sample):
         self.__samples.append(new_sample)
-
