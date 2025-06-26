@@ -86,19 +86,21 @@ def exists_path(graph: Graph, u: int, v: int):
     """
     return exists_path_rec(graph, v, [u], [[0]])
 
-def dfs_rec(g: Graph, act_on: int, marked: list[bool], visited: list):
+def dfs_rec(g: Graph, act_on: int, marked: list[bool]):
     current_neighbours = g.get_node_edges(act_on)
     for edge in current_neighbours:
         if not marked[edge]:
             marked[edge] = True
-            visited.append(edge)
-            dfs_rec(g, edge, marked, visited)
+            dfs_rec(g, edge, marked)
 
 def dfs(graph: Graph, u: int):
     marked = [False] * len(graph.get_nodes())
     marked[u] = True
-    visited = [u]
-    dfs_rec(graph, u, marked, visited)
+    visited = []
+    dfs_rec(graph, u, marked)
+    for i, b in enumerate(marked):
+        if b:
+            visited.append(i)
     return visited
 
 def make_undirected(graph: Graph):
@@ -108,27 +110,24 @@ def make_undirected(graph: Graph):
 
 def connected_components(graph):
     make_undirected(graph)
-    while
+    connected = []
+    visited = []
+    g_nodes = graph.get_nodes()
+    no_of_g_nodes = len(g_nodes)
+    while len(visited) < no_of_g_nodes:
+        for node in g_nodes:
+            if node not in visited:
+                dfs_vis = dfs(graph, node)
+                connected.append(dfs_vis)
+                visited += dfs_vis
+    return connected
 
-my_g = Graph([0,1,2,3,4,5,6,7,8,9])
+my_g = Graph([0,1,2,3,4,5,6,7,8])
+my_g.add_edge_to_graph(0, 6)
 my_g.add_edge_to_graph(0, 8)
-my_g.add_edge_to_graph(0, 1)
-my_g.add_edge_to_graph(0, 7)
-my_g.add_edge_to_graph(1, 4)
-my_g.add_edge_to_graph(2, 6)
+my_g.add_edge_to_graph(0, 4)
+my_g.add_edge_to_graph(2, 1)
+my_g.add_edge_to_graph(1, 5)
 my_g.add_edge_to_graph(3, 5)
-my_g.add_edge_to_graph(3, 6)
-my_g.add_edge_to_graph(4, 9)
-my_g.add_edge_to_graph(4, 0)
-my_g.add_edge_to_graph(4, 3)
-my_g.add_edge_to_graph(4, 5)
-my_g.add_edge_to_graph(6, 2)
-my_g.add_edge_to_graph(6, 5)
-my_g.add_edge_to_graph(7, 2)
-my_g.add_edge_to_graph(7, 3)
-my_g.add_edge_to_graph(7, 8)
-my_g.add_edge_to_graph(8, 7)
-my_g.add_edge_to_graph(8, 1)
-my_g.add_edge_to_graph(8, 0)
-my_g.add_edge_to_graph(9, 0)
-print(dfs(my_g, 4))
+my_g.add_edge_to_graph(7, 6)
+print(connected_components(my_g))
