@@ -86,23 +86,29 @@ def exists_path(graph: Graph, u: int, v: int):
     """
     return exists_path_rec(graph, v, [u], [[0]])
 
-def dfs_rec(g: Graph, act_on: int, marked: list[bool], visited: list, i_of_act_on: int):
+def dfs_rec(g: Graph, act_on: int, marked: list[bool], visited: list):
     current_neighbours = g.get_node_edges(act_on)
     for edge in current_neighbours:
         if not marked[edge]:
             marked[edge] = True
             visited.append(edge)
-            return dfs_rec(g, edge, marked, visited, i_of_act_on)
-    if act_on == visited[0]:
-        return visited
-    i_of_act_on -= 1
-    return dfs_rec(g, visited[i_of_act_on], marked, visited, i_of_act_on)
+            dfs_rec(g, edge, marked, visited)
 
 def dfs(graph: Graph, u: int):
     marked = [False] * len(graph.get_nodes())
     marked[u] = True
     visited = [u]
-    return dfs_rec(graph, u, marked, visited, -1)
+    dfs_rec(graph, u, marked, visited)
+    return visited
+
+def make_undirected(graph: Graph):
+    for node in graph.get_nodes():
+        for edge in graph.get_node_edges(node):
+            graph.add_edge_to_graph(edge, node)
+
+def connected_components(graph):
+    make_undirected(graph)
+    while
 
 my_g = Graph([0,1,2,3,4,5,6,7,8,9])
 my_g.add_edge_to_graph(0, 8)
@@ -125,6 +131,4 @@ my_g.add_edge_to_graph(8, 7)
 my_g.add_edge_to_graph(8, 1)
 my_g.add_edge_to_graph(8, 0)
 my_g.add_edge_to_graph(9, 0)
-print(my_g)
-
 print(dfs(my_g, 4))
