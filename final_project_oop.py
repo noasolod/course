@@ -49,6 +49,9 @@ def is_mail_valid(mail):
     for e in mail:
         if e == "@":
             et_count += 1
+            if dot_count != 0:
+                print("Your mail cannot have '.' before '@'.")
+                flag = False
         elif e == ".":
             dot_count += 1
     if mail[0] == "@" or mail[0] == "." or mail[-1] == "@" or mail[-1] == ".":
